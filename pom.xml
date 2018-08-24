@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.codewise.globee</groupId>
-    <artifactId>globee</artifactId>
+    <artifactId>globee-oss</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
