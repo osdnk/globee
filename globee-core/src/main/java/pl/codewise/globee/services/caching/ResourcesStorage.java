@@ -1,5 +1,6 @@
 package pl.codewise.globee.services.caching;
 
+import com.google.common.base.Stopwatch;
 import pl.codewise.globee.utils.ResourceType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
@@ -60,9 +61,18 @@ public class ResourcesStorage implements ResourceVisitor {
     }
 
     void initiate(List<String> regions) {
+        Stopwatch all = Stopwatch.createStarted();
+        Stopwatch instances = Stopwatch.createStarted();
         instanceStorage.initiate(regions);
+        log.info("Pulling data about {} Instances took {}", instancesCount(), instances.stop());
+        Stopwatch lc = Stopwatch.createStarted();
         launchConfigurationStorage.initiate(regions);
+        log.info("Pulling data about {} Launch Configurations took {}", launchConfigurationsCount(), lc.stop());
+        Stopwatch asg = Stopwatch.createStarted();
         autoScalingGroupStorage.initiate(regions);
+        log.info("Pulling data about {} AutoScaling Groups took {}", autoScalingGroupsCount(), asg.stop());
+        log.info("Pulling data from AWS took {}. There have been pulled details about {} resources",
+                all.stop(), (instancesCount() + launchConfigurationsCount() + autoScalingGroupsCount()));
     }
 
     private static Set<? extends AwsResource> matchAndFilterResourcesImpl(Map<String, String> query,
@@ -93,15 +103,15 @@ public class ResourcesStorage implements ResourceVisitor {
         return matchedResources;
     }
 
-    int instancesCount() {
+    private int instancesCount() {
         return instanceStorage.size();
     }
 
-    int launchConfigurationsCount() {
+    private int launchConfigurationsCount() {
         return launchConfigurationStorage.size();
     }
 
-    int autoScalingGroupsCount() {
+    private int autoScalingGroupsCount() {
         return autoScalingGroupStorage.size();
     }
 }

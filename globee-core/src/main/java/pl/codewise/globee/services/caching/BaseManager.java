@@ -2,12 +2,11 @@ package pl.codewise.globee.services.caching;
 
 import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
 import com.amazon.sqs.javamessaging.SQSConnection;
-import pl.codewise.globee.exceptions.WrongSqsNameException;
-import pl.codewise.globee.listeners.SqsListener;
-import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pl.codewise.globee.exceptions.WrongSqsNameException;
+import pl.codewise.globee.listeners.SqsListener;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -61,11 +60,7 @@ public class BaseManager {
     }
 
     private void initiateStorage() {
-        Stopwatch sw = Stopwatch.createStarted();
         resourcesStorage.initiate(regions);
-        log.info("Pulling data from AWS took {}. There have been pulled details about {} resources",
-                sw.stop(), (resourcesStorage.instancesCount() + resourcesStorage.launchConfigurationsCount() +
-                        resourcesStorage.autoScalingGroupsCount()));
     }
 
     private void subscribeToTopic() throws JMSException {
