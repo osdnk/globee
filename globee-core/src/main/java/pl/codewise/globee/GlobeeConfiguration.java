@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.jms.JMSException;
+import java.time.Clock;
 import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -57,5 +58,10 @@ public class GlobeeConfiguration {
     public SQSConnection sqsConnection(AmazonSQS amazonSQS)
             throws JMSException {
         return new SQSConnectionFactory(new ProviderConfiguration(), amazonSQS).createConnection();
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.systemUTC();
     }
 }
