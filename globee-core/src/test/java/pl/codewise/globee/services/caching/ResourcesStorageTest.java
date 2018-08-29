@@ -1,7 +1,5 @@
 package pl.codewise.globee.services.caching;
 
-import pl.codewise.globee.services.crawlers.AwsResourcesFinder;
-import pl.codewise.globee.utils.ResourceType;
 import com.google.common.collect.ImmutableMap;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -10,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.codewise.commons.aws.cqrs.model.AwsInstance;
 import pl.codewise.commons.aws.cqrs.model.AwsResource;
+import pl.codewise.globee.services.crawlers.AwsResourcesFinder;
+import pl.codewise.globee.utils.ResourceType;
 
 import java.util.Map;
 import java.util.Set;

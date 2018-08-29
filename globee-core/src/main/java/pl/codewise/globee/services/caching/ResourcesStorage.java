@@ -42,6 +42,11 @@ public class ResourcesStorage implements ResourceVisitor {
         launchConfigurationStorage.visit(launchConfiguration);
     }
 
+    @Override
+    public void visit(AwsResourceIdWithRegion.AutoScalingGroup autoScalingGroup) {
+        autoScalingGroupStorage.visit(autoScalingGroup);
+    }
+
     public static Set<? extends AwsResource> matchAndFilterResources(Map<String, String> query, ResourceType type) {
         switch (type) {
             case INSTANCE:
@@ -53,11 +58,6 @@ public class ResourcesStorage implements ResourceVisitor {
         }
         log.error("No valid ResourceType provided");
         return Collections.emptySet();
-    }
-
-    @Override
-    public void visit(AwsResourceIdWithRegion.AutoScalingGroup autoScalingGroup) {
-        autoScalingGroupStorage.visit(autoScalingGroup);
     }
 
     void initiate(List<String> regions) {

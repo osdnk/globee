@@ -1,7 +1,5 @@
 package pl.codewise.globee.services.caching;
 
-import pl.codewise.globee.exceptions.UnsupportedMessageFormReceivedException;
-import pl.codewise.globee.utils.GlobeeStringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -9,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.stereotype.Service;
+import pl.codewise.globee.exceptions.UnsupportedMessageFormReceivedException;
+import pl.codewise.globee.utils.GlobeeStringUtils;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -38,6 +38,7 @@ public class SqsMessagesDeserializer {
             JsonNode node = objectMapper.readTree(messageText);
             final String message = extractJson(node.get("Message").toString());
             final String region = objectMapper.readTree(message).get("region").toString();
+            log.info("Message from SQS: {}", message);
             return extractResources(message, region);
         } catch (JsonParseException | IOException e) {
             throw new UnsupportedMessageFormReceivedException("Unsupported notification form, unable to process", e);
@@ -58,22 +59,15 @@ public class SqsMessagesDeserializer {
 
     private Set<AwsResourceIdWithRegion> extractLaunchConfiguration(String message, String region)
             throws IOException, UnsupportedMessageFormReceivedException {
-        boolean shouldResourceBeDeleted = false;
-        if (message.contains("DeleteLaunchConfiguration")) {
-            shouldResourceBeDeleted = true;
-        }
         return Set.of(AwsResourceIdWithRegion.launchConfiguration(
-                extractLaunchConfigurationName(message), region, shouldResourceBeDeleted));
+                extractLaunchConfigurationName(message), region, message.contains("DeleteLaunchConfiguration")));
     }
 
     private Set<AwsResourceIdWithRegion> extractAutoScalingGroup(String message, String region)
             throws IOException, UnsupportedMessageFormReceivedException {
-        boolean shouldResourceBeDeleted = false;
-        if (message.contains("DeleteAutoScalingGroup")) {
-            shouldResourceBeDeleted = true;
-        }
         return Set.of(AwsResourceIdWithRegion
-                .autoScalingGroup(extractAutoScalingGroupName(message), region, shouldResourceBeDeleted));
+                .autoScalingGroup(extractAutoScalingGroupName(message), region,
+                        message.contains("DeleteAutoScalingGroup")));
     }
 
     private Set<AwsResourceIdWithRegion> extractInstances(String message, String region) {
@@ -86,7 +80,7 @@ public class SqsMessagesDeserializer {
         }
         return matched.stream()
                 .map(GlobeeStringUtils::removeFirstAndLastCharacter)
-                .map(id -> AwsResourceIdWithRegion.instance(id, region, false))
+                .map(id -> AwsResourceIdWithRegion.instance(id, region, message.contains("TerminateInstance")))
                 .collect(Collectors.toSet());
     }
 

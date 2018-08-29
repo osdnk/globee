@@ -1,12 +1,12 @@
 package pl.codewise.globee.services.caching;
 
-import pl.codewise.globee.utils.AsyncStream;
-import pl.codewise.globee.utils.GlobeeStringUtils;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import pl.codewise.commons.aws.cqrs.model.AwsResource;
+import pl.codewise.globee.utils.AsyncStream;
+import pl.codewise.globee.utils.GlobeeStringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -37,14 +37,14 @@ abstract class ResourceStorage<R extends AwsResourceIdWithRegion, A extends AwsR
     void visit(R resource) {
         writeLock.lock();
         try {
-            if (resource.isShouldResourceBeDeleted()) {
+            if (resource.isToBeDeleted() && resources.containsKey(resource.getId())) {
                 resources.remove(resource.getId());
-                log.info("Successfully removed data about deleted {}: {}",
+                log.info("Removing data about {}: {}",
                         GlobeeStringUtils.extractExactClassName(resource.getClass().getName()),
                         resource.getId());
-            } else {
+            } else if (!resource.isToBeDeleted()) {
                 resources.put(resource.getId(), fetchSingle(resource));
-                log.info("Successfully updated data about {}: {}",
+                log.info("Updating data about {}: {}",
                         GlobeeStringUtils.extractExactClassName(resource.getClass().getName()),
                         resource.getId());
             }
