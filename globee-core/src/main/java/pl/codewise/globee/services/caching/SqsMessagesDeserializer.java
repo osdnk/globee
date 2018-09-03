@@ -38,7 +38,7 @@ public class SqsMessagesDeserializer {
             JsonNode node = objectMapper.readTree(messageText);
             final String message = extractJson(node.get("Message").toString());
             final String region = objectMapper.readTree(message).get("region").toString();
-            log.info("Message from SQS: {}", message);
+            log.info("Message from SQS:\n{}", message);
             return extractResources(message, region);
         } catch (JsonParseException | IOException e) {
             throw new UnsupportedMessageFormReceivedException("Unsupported notification form, unable to process", e);
