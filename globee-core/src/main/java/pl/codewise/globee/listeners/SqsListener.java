@@ -33,14 +33,14 @@ public class SqsListener implements MessageListener {
             try {
                 message.acknowledge();
             } catch (JMSException e) {
-                log.warn("Unable to acknowledge message: {}", e);
+                log.warn("Unable to acknowledge message: {}", e.getMessage());
             }
         } else {
             try {
                 TimeUnit.SECONDS.sleep(1);
                 handleReceivedMessage(message);
             } catch (InterruptedException e) {
-                log.warn("Unable to sleep thread: {}", e);
+                log.warn("Unable to sleep thread: {}", e.getMessage());
             }
         }
     }
@@ -53,7 +53,7 @@ public class SqsListener implements MessageListener {
         } catch (UnsupportedMessageFormReceivedException | JMSException e) {
             log.warn("Unable to handle message received from SQS: \n{}", messageText, e);
         } catch (AmazonAutoScalingException e) {
-            log.warn("Rate exceeded while updating data, retry in one second: {}", e);
+            log.warn("Rate exceeded while updating data, retry in one second: {}", e.getErrorMessage());
             return false;
         }
         return true;

@@ -2,8 +2,11 @@ package pl.codewise.globee.services.caching;
 
 import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
 import com.amazon.sqs.javamessaging.SQSConnection;
+import com.amazonaws.services.autoscaling.model.AmazonAutoScalingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import pl.codewise.globee.exceptions.WrongSqsNameException;
 import pl.codewise.globee.listeners.SqsListener;
@@ -41,12 +44,22 @@ public class BaseManager {
     }
 
     @PostConstruct
+    @Retryable(
+            value = {AmazonAutoScalingException.class},
+            maxAttempts = 6,
+            backoff = @Backoff(delay = 10000)
+    )
     private void startListening() throws JMSException, WrongSqsNameException {
-        if (!client.queueExists(queueName)) {
-            throw new WrongSqsNameException("Provided Amazon SQS name does not exist: " + queueName);
+        try {
+            if (!client.queueExists(queueName)) {
+                throw new WrongSqsNameException("Provided Amazon SQS name does not exist: " + queueName);
+            }
+            initiateStorage();
+            subscribeToTopic();
+        } catch (AmazonAutoScalingException e) {
+            log.warn("Rate exceeded while starting the app, retrying in 10 seconds");
+            throw e;
         }
-        initiateStorage();
-        subscribeToTopic();
     }
 
     @PreDestroy

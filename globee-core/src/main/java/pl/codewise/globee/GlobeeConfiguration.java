@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.retry.annotation.EnableRetry;
 
 import javax.jms.JMSException;
 import java.time.Clock;
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 @Configuration
+@EnableRetry
 public class GlobeeConfiguration {
 
     private static final String USER_AGENT_HEADER_NAME = "User-Agent";
