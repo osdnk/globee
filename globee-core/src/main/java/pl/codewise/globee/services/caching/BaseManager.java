@@ -44,22 +44,12 @@ public class BaseManager {
     }
 
     @PostConstruct
-    @Retryable(
-            value = {AmazonAutoScalingException.class},
-            maxAttempts = 6,
-            backoff = @Backoff(delay = 10000)
-    )
     private void startListening() throws JMSException, WrongSqsNameException {
-        try {
-            if (!client.queueExists(queueName)) {
-                throw new WrongSqsNameException("Provided Amazon SQS name does not exist: " + queueName);
-            }
-            initiateStorage();
-            subscribeToTopic();
-        } catch (AmazonAutoScalingException e) {
-            log.warn("Rate exceeded while starting the app, retrying in 10 seconds");
-            throw e;
+        if (!client.queueExists(queueName)) {
+            throw new WrongSqsNameException("Provided Amazon SQS name does not exist: " + queueName);
         }
+        initiateStorage();
+        subscribeToTopic();
     }
 
     @PreDestroy
@@ -72,8 +62,18 @@ public class BaseManager {
         }
     }
 
+    @Retryable(
+            value = {AmazonAutoScalingException.class},
+            maxAttempts = 6,
+            backoff = @Backoff(delay = 10000)
+    )
     private void initiateStorage() {
-        resourcesStorage.initiate(regions);
+        try {
+            resourcesStorage.initiate(regions);
+        } catch (AmazonAutoScalingException e) {
+            log.warn("Rate exceeded while starting the app, retrying in 10 seconds");
+            throw e;
+        }
     }
 
     private void subscribeToTopic() throws JMSException {

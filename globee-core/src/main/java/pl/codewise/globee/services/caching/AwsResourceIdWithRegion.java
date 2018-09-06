@@ -1,5 +1,6 @@
 package pl.codewise.globee.services.caching;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Data;
 
 import static pl.codewise.globee.utils.GlobeeStringUtils.removeQuotationMarks;
@@ -11,7 +12,7 @@ public abstract class AwsResourceIdWithRegion {
     private final String region;
     private final boolean toBeDeleted;
 
-    private AwsResourceIdWithRegion(String id, String region, boolean toBeDeleted) {
+    protected AwsResourceIdWithRegion(String id, String region, boolean toBeDeleted) {
         this.id = id;
         this.region = region;
         this.toBeDeleted = toBeDeleted;
@@ -19,15 +20,16 @@ public abstract class AwsResourceIdWithRegion {
 
     public abstract void visit(ResourceVisitor visitor);
 
+    @VisibleForTesting
     public static Instance instance(String id, String region, boolean toBeDeleted) {
         return new Instance(removeQuotationMarks(id), removeQuotationMarks(region), toBeDeleted);
     }
 
-    public static LaunchConfiguration launchConfiguration(String id, String region, boolean toBeDeleted) {
+    static LaunchConfiguration launchConfiguration(String id, String region, boolean toBeDeleted) {
         return new LaunchConfiguration(removeQuotationMarks(id), removeQuotationMarks(region), toBeDeleted);
     }
 
-    public static AutoScalingGroup autoScalingGroup(String id, String region, boolean toBeDeleted) {
+    static AutoScalingGroup autoScalingGroup(String id, String region, boolean toBeDeleted) {
         return new AutoScalingGroup(removeQuotationMarks(id), removeQuotationMarks(region), toBeDeleted);
     }
 

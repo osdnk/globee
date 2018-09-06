@@ -24,16 +24,16 @@ public class SqsListener implements MessageListener {
     private final ResourcesStorage resourcesStorage;
     private final SqsMessagesDeserializer sqsMessagesDeserializer;
     private final int maxRetriesNumber;
-    private final int timeoutBetweenRetries;
+    private final int millisecondsBetweenRetries;
     private final ScheduledExecutorService unprocessedExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     public SqsListener(ResourcesStorage resourcesStorage,
             SqsMessagesDeserializer sqsMessagesDeserializer, @Value("${max.retries.number}") int maxRetriesNumber,
-            @Value("${timeout.between.retries}") int timeoutBetweenRetries) {
+            @Value("${milliseconds.between.retries}") int millisecondsBetweenRetries) {
         this.resourcesStorage = resourcesStorage;
         this.sqsMessagesDeserializer = sqsMessagesDeserializer;
         this.maxRetriesNumber = maxRetriesNumber;
-        this.timeoutBetweenRetries = timeoutBetweenRetries;
+        this.millisecondsBetweenRetries = millisecondsBetweenRetries;
     }
 
     @PreDestroy
@@ -70,7 +70,7 @@ public class SqsListener implements MessageListener {
                 tryProcessInFuture(messagePayload, tryNumber - 1);
             }
         };
-        unprocessedExecutorService.schedule(process, timeoutBetweenRetries, TimeUnit.SECONDS);
+        unprocessedExecutorService.schedule(process, millisecondsBetweenRetries, TimeUnit.MILLISECONDS);
     }
 
     private boolean processMessage(String messageText) {
@@ -79,7 +79,7 @@ public class SqsListener implements MessageListener {
         } catch (UnsupportedMessageFormReceivedException e) {
             log.error("Unable to handle message received from SQS:\n{}", messageText, e);
         } catch (AmazonAutoScalingException e) {
-            log.warn("Rate exceeded while updating data, retry in one second: {}", e.getErrorMessage());
+            log.warn("Rate exceeded while updating data, retry in {} ms: {}", millisecondsBetweenRetries, e.getErrorMessage());
             return false;
         }
         return true;

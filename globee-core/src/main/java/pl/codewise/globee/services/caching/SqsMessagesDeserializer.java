@@ -76,7 +76,7 @@ public class SqsMessagesDeserializer {
                 .flatMap(matcher -> matcher.results().map(MatchResult::group))
                 .collect(Collectors.toSet());
         if (matched.isEmpty()) {
-            log.debug(message);
+            log.info("Message contains no valid AWS resource ID: \n{}", message);
         }
         return matched.stream()
                 .map(GlobeeStringUtils::removeFirstAndLastCharacter)
