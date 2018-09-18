@@ -18,6 +18,7 @@
 
     <modules>
         <module>globee-core</module>
+        <module>globee-sdk</module>
     </modules>
 
 </project>
