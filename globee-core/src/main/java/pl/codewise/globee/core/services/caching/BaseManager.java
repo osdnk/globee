@@ -48,8 +48,8 @@ public class BaseManager {
         if (!client.queueExists(queueName)) {
             throw new WrongSqsNameException("Provided Amazon SQS name does not exist: " + queueName);
         }
-        initiateStorage();
         subscribeToTopic();
+        initiateStorage();
     }
 
     @PreDestroy
