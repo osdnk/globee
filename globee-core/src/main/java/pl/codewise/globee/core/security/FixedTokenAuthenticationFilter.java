@@ -1,4 +1,4 @@
-package pl.codewise.globee.security;
+package pl.codewise.globee.core.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

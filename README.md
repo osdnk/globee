@@ -68,8 +68,8 @@ configuring any retries policy in AWS Console.
 
 ### Security
 
-As Globee is divided into backend and frontend side, it has to provide some authentication mechanisms. In fact, `api.token` has to be placed in `application.properties` file. 
-The very same token has to be present in HTTP header for each request being sent from frontend part of the application in order to receive access to backend data. For example, when sending a request from Postman, it is necessary to add header with key `api-token` and value same as provided with `api.token` in `application.properties`.
+As Globee is divided into backend and frontend side, it has to provide some authentication mechanisms. In fact, `globee.api.token` has to be placed in `application.properties` file. 
+The very same token has to be present in HTTP header for each request being sent from frontend part of the application in order to receive access to backend data. For example, when sending a request from Postman, it is necessary to add header with key `api-token` and value same as provided with `globee.api.token` in `application.properties`.
 
 ### Outline of how Globee works
 

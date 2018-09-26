@@ -19,7 +19,6 @@
     <modules>
         <module>globee-core</module>
         <module>globee-sdk</module>
-        <module>globee-security</module>
     </modules>
 
 </project>

@@ -1,4 +1,4 @@
-package pl.codewise.globee.security;
+package pl.codewise.globee.core.security;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
