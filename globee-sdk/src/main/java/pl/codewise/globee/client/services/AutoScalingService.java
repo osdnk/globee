@@ -1,4 +1,4 @@
-package pl.codewise.globee.core.client.services;
+package pl.codewise.globee.client.services;
 
 import pl.codewise.commons.aws.cqrs.model.AwsAutoScalingGroup;
 import pl.codewise.commons.aws.cqrs.model.ec2.AwsLaunchConfiguration;

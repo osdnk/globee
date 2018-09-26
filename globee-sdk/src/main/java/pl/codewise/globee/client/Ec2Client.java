@@ -1,10 +1,10 @@
-package pl.codewise.globee.core.client;
+package pl.codewise.globee.client;
 
 import com.amazonaws.regions.Regions;
 import lombok.AllArgsConstructor;
 import pl.codewise.commons.aws.cqrs.model.AwsInstance;
-import pl.codewise.globee.core.client.exceptions.GlobeeClientException;
-import pl.codewise.globee.core.client.services.Ec2Service;
+import pl.codewise.globee.client.exceptions.GlobeeClientException;
+import pl.codewise.globee.client.services.Ec2Service;
 import retrofit2.Response;
 
 import java.io.IOException;

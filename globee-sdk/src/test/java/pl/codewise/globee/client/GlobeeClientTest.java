@@ -1,9 +1,9 @@
-package pl.codewise.globee.core.client;
+package pl.codewise.globee.client;
 
 import com.amazonaws.regions.Regions;
 import org.junit.Ignore;
 import org.junit.Test;
-import pl.codewise.globee.core.client.exceptions.GlobeeClientException;
+import pl.codewise.globee.client.exceptions.GlobeeClientException;
 
 import java.io.IOException;
 

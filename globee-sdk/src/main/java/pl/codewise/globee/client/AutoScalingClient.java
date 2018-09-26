@@ -1,11 +1,11 @@
-package pl.codewise.globee.core.client;
+package pl.codewise.globee.client;
 
 import com.amazonaws.regions.Regions;
 import lombok.AllArgsConstructor;
 import pl.codewise.commons.aws.cqrs.model.AwsAutoScalingGroup;
 import pl.codewise.commons.aws.cqrs.model.ec2.AwsLaunchConfiguration;
-import pl.codewise.globee.core.client.exceptions.GlobeeClientException;
-import pl.codewise.globee.core.client.services.AutoScalingService;
+import pl.codewise.globee.client.exceptions.GlobeeClientException;
+import pl.codewise.globee.client.services.AutoScalingService;
 import retrofit2.Response;
 
 import java.io.IOException;

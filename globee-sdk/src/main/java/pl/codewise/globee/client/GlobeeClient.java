@@ -1,10 +1,10 @@
-package pl.codewise.globee.core.client;
+package pl.codewise.globee.client;
 
 import okhttp3.OkHttpClient;
 import pl.codewise.commons.aws.cqrs.model.AwsResource;
-import pl.codewise.globee.core.client.exceptions.GlobeeClientException;
-import pl.codewise.globee.core.client.services.AutoScalingService;
-import pl.codewise.globee.core.client.services.Ec2Service;
+import pl.codewise.globee.client.exceptions.GlobeeClientException;
+import pl.codewise.globee.client.services.AutoScalingService;
+import pl.codewise.globee.client.services.Ec2Service;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;

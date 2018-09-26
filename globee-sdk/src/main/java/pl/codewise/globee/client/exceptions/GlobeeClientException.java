@@ -1,4 +1,4 @@
-package pl.codewise.globee.core.client.exceptions;
+package pl.codewise.globee.client.exceptions;
 
 public class GlobeeClientException extends Exception {
 
