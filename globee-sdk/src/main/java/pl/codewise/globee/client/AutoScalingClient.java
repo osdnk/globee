@@ -9,7 +9,9 @@ import pl.codewise.globee.client.services.AutoScalingService;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class AutoScalingClient {
@@ -23,6 +25,12 @@ public class AutoScalingClient {
             return response.body();
         }
         throw new GlobeeClientException("Globee returned HTTP " + response.code());
+    }
+
+    public List<AwsAutoScalingGroup> searchAutoScalingGroups(Collection collection)
+            throws IOException, GlobeeClientException {
+        String query = collection.stream().collect(Collectors.joining(",")).toString();
+        return searchAutoScalingGroups(query);
     }
 
     public List<AwsAutoScalingGroup> getAutoScalingGroups() throws IOException, GlobeeClientException {
@@ -57,6 +65,12 @@ public class AutoScalingClient {
             return response.body();
         }
         throw new GlobeeClientException("Globee returned HTTP " + response.code());
+    }
+
+    public List<AwsLaunchConfiguration> searchLaunchConfigurations(Collection collection)
+            throws IOException, GlobeeClientException {
+        String query = collection.stream().collect(Collectors.joining(",")).toString();
+        return searchLaunchConfigurations(query);
     }
 
     public List<AwsLaunchConfiguration> getLaunchConfigurations() throws IOException, GlobeeClientException {

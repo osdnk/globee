@@ -8,7 +8,9 @@ import pl.codewise.globee.client.services.Ec2Service;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class Ec2Client {
@@ -21,6 +23,11 @@ public class Ec2Client {
             return response.body();
         }
         throw new GlobeeClientException("Globee returned HTTP " + response.code());
+    }
+
+    public List<AwsInstance> searchInstances(Collection collection) throws IOException, GlobeeClientException {
+        String query = collection.stream().collect(Collectors.joining(",")).toString();
+        return searchInstances(query);
     }
 
     public List<AwsInstance> getInstances() throws IOException, GlobeeClientException {
