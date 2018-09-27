@@ -11,12 +11,9 @@
 
     <artifactId>globee-core</artifactId>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>10</java.version>
-        <commons-aws.version>1.0.3</commons-aws.version>
-    </properties>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Global grep over AWS resources</description>
+    <url>https://github.com/codewise-oss/globee</url>
 
     <dependencyManagement>
         <dependencies>

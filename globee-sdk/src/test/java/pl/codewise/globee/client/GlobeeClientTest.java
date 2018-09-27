@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GlobeeClientTest {
 
     private final GlobeeClient client =
-            new GlobeeClient("http://mock.globee.url.com", "globee-password-mock");
+            new GlobeeClient("https://mock.globee.url.com", "globee-password-mock");
     private final Ec2Client ec2Client = client.ec2();
     private final AutoScalingClient autoScalingClient = client.autoScaling();
 
