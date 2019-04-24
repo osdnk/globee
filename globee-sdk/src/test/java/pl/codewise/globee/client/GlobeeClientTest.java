@@ -43,7 +43,7 @@ public class GlobeeClientTest {
     public void shouldReturnLaunchConfigurationsListWithoutThrowingAnyException()
             throws IOException, GlobeeClientException {
         assertThat(autoScalingClient.getLaunchConfigurations(Regions.US_EAST_1)).isNotNull();
-        final String name = autoScalingClient.getLaunchConfigurations().get(0).getLaunchConfigurationName();
+        final String name = autoScalingClient.getLaunchConfigurations().get(0).getName();
         assertThat(name).isNotNull();
         assertThat(autoScalingClient.getLaunchConfiguration(name)).isNotNull();
     }

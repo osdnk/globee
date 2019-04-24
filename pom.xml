@@ -67,7 +67,7 @@
     <properties>
         <project.encoding>UTF-8</project.encoding>
         <java.version>10</java.version>
-        <commons-aws.version>1.0.5</commons-aws.version>
+        <commons-aws.version>1.0.10</commons-aws.version>
         <jackson.version>2.9.7</jackson.version>
         <lombok.version>1.18.4</lombok.version>
         <mockito.version>2.23.4</mockito.version>
